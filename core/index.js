@@ -1,50 +1,42 @@
 const Koa = require('koa');
 const Router = require('koa-router');
-const busboy = require('async-busboy');
 const app = new Koa();
 const router = new Router();
 const Tokenizer = require('./tokenizer');
 const tokenizer = new Tokenizer();
 const understand = require('./understand');
+const config = require('../config');
 
-app.context.channel = '@bot_honeypot';
-// app.context.channel = '@supatest';
+app.context.channel = config.channel;
 app.context.ok = {ok: true};
 
-app.keys = require('../config').secret;
+app.keys = config.secret;
 
-// router.get('*', ctx => {
-//     ctx.body = 'Sorry, the explicit sending is forbidden for the moment.';
+router.get('*', ctx => {
+    ctx.body = 'Sorry, the explicit sending is forbidden for the moment.';
+});
+
+// router.get('/test', ctx => {
+//     let replyMarkup = bot.inlineKeyboard([
+//         [
+//             bot.inlineButton('callback', {callback: 'this_is_data'}),
+//             bot.inlineButton('inline', {inline: 'some query'})
+//         ], [
+//             bot.inlineButton('url', {url: 'https://telegram.org'})
+//         ]
+//     ]);
+//     bot.sendMessage(ctx.channel, `bibi`, {
+//         replyMarkup
+//     }).catch(console.log);
 // });
 
-let prepare = async (ctx) => {
-    let {files, fields} = await busboy(ctx.req);
-    ctx.request.body = ctx.request.body || {};
-    for (let i in fields) {
-        ctx.request.body[i] = fields[i];
-    }
-    for (let i in files) {
-        ctx.request.body[files[i].fieldname] = files[i];
-    }
-};
-
-router.get('/test', ctx => {
-    let replyMarkup = bot.inlineKeyboard([
-        [
-            bot.inlineButton('callback', {callback: 'this_is_data'}),
-            bot.inlineButton('inline', {inline: 'some query'})
-        ], [
-            bot.inlineButton('url', {url: 'https://telegram.org'})
-        ]
-    ]);
-    bot.sendMessage(ctx.channel, `bibi`, {
-        replyMarkup
-    }).catch(console.log);
+router.post('/' + config.token +'/webhook', ctx => {
+    console.log(ctx.request);
 });
 
 router.post('/me/:token/msg', async ctx => {
     let token = ctx.params.token;
-    await prepare(ctx);
+    await require('./prepare')(ctx);
     switch (true) {
         case !token || !tokenizer.verify(token):
             ctx.body = 'Sorry, the token has been mismatched.';

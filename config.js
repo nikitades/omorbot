@@ -5,5 +5,6 @@ module.exports = {
         '789'
     ],
     token: '101',
-    port: 80
+    port: 80,
+    channel: '@bot_honeypot'
 };
