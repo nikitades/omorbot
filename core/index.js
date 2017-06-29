@@ -7,11 +7,11 @@ const Tokenizer = require('./tokenizer');
 const tokenizer = new Tokenizer();
 const understand = require('./understand');
 
-// app.context.channel = '@bot_honeypot';
-app.context.channel = '@supatest';
+app.context.channel = '@bot_honeypot';
+// app.context.channel = '@supatest';
 app.context.ok = {ok: true};
 
-app.keys = ['im a newer secret', 'i like turtle'];
+app.keys = require('../config').secret;
 
 // router.get('*', ctx => {
 //     ctx.body = 'Sorry, the explicit sending is forbidden for the moment.';
@@ -28,17 +28,6 @@ let prepare = async (ctx) => {
     }
 };
 
-let bot = require('../bot');
-bot.start();
-// Inline button callback
-bot.on('callbackQuery', msg => {
-    // User message alert
-    // bot.sendMessage(app.context.channel, `Inline button callback: ${ msg.data }`);
-    return bot.answerCallbackQuery(msg.id, `Inline button callback: ${ msg.data }`, {
-        text: 'sdasd'
-    });
-    // return bot.answerCallbackQuery(msg.id, `Inline button callback: ${ msg.data }`, true);
-});
 router.get('/test', ctx => {
     let replyMarkup = bot.inlineKeyboard([
         [
