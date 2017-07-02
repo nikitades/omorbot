@@ -2,55 +2,38 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const app = new Koa();
 const router = new Router();
-const Tokenizer = require('./tokenizer');
-const tokenizer = new Tokenizer();
-const understand = require('./understand');
 const config = require('../config');
+const koastatic = require('koa-static');
+const body = require('koa-body');
+const prepareBody = require('./prepare');
+const bot = require('../bot');
+
+app.use(koastatic('static/', {hidden: true}));
+app.use(body());
+app.use(prepareBody);
 
 app.context.channel = config.channel;
 app.context.ok = {ok: true};
-
+app.context.fail = {ok: false};
 app.keys = config.secret;
 
 router.get('*', ctx => {
     ctx.body = 'Sorry, the explicit sending is forbidden for the moment.';
 });
 
-// router.get('/test', ctx => {
-//     let replyMarkup = bot.inlineKeyboard([
-//         [
-//             bot.inlineButton('callback', {callback: 'this_is_data'}),
-//             bot.inlineButton('inline', {inline: 'some query'})
-//         ], [
-//             bot.inlineButton('url', {url: 'https://telegram.org'})
-//         ]
-//     ]);
-//     bot.sendMessage(ctx.channel, `bibi`, {
-//         replyMarkup
-//     }).catch(console.log);
-// });
-
-router.post('/' + config.token +'/webhook', ctx => {
-    console.log(ctx.request);
-});
-
-router.post('/me/:token/msg', async ctx => {
-    let token = ctx.params.token;
-    await require('./prepare')(ctx);
-    switch (true) {
-        case !token || !tokenizer.verify(token):
-            ctx.body = 'Sorry, the token has been mismatched.';
-            break;
-        case !('author' in ctx.request.body):
-            ctx.body = 'Warning! Parameters mismatch (author)';
-            break;
-        case !('msg' in ctx.request.body):
-            ctx.body = 'Warning! Parameters mismatch (msg)';
-            break;
-        default:
-            ctx.body = understand(ctx);
+router.post(`/webhook/1/${config.token}`, ctx => {
+    if (Object.keys(ctx.request.body).length) {
+        bot.handleUpdate(ctx.request.body).catch(console.log);
+        ctx.body = ctx.ok;
+    } else {
+        console.log('FAILED UPDATE REQUEST!');
+        console.log(ctx.request.body);
+        ctx.body = ctx.fail;
+        ctx.status = 404;
     }
 });
+
+require('./public_api')(app, router);
 
 module.exports = {
     app,

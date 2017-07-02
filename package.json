@@ -15,8 +15,10 @@
     "babel-preset-es2017": "^6.24.1",
     "busboy": "^0.2.14",
     "koa": "^2.3.0",
+    "koa-body": "^2.3.0",
     "koa-router": "^7.2.1",
-    "telebot": "^1.2.2"
+    "koa-static": "^3.0.0",
+    "telegraf": "^3.8.0"
   },
   "babel": {
     "presets": [
