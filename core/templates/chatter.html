@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title of the document</title>
+</head>
+<body>
+<div id="chatter">
+    {{#each conversation}}
+        From: <b>{{name}}</b>
+        {{#each items}}
+        <p>{{body}}</p>
+        {{/each}}
+    {{/each}}
+</div>
+</body>
+</html>

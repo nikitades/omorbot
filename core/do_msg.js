@@ -1,7 +1,7 @@
 const fs = require('fs');
 const bot = require('../bot');
-const Markup = require('telegraf').Markup;
 const Extra = require('telegraf').Extra;
+const path = require('path');
 
 let general_extra = Extra
     .markdown()
@@ -10,7 +10,6 @@ let general_extra = Extra
         m.callbackButton('Я занята', 'answer:2'),
         m.callbackButton(')))))))', 'answer:3'),
     ], {columns: 3}));
-;
 
 module.exports = ctx => {
     switch (typeof ctx.request.body.attachment) {
@@ -23,7 +22,7 @@ module.exports = ctx => {
                     if ('url' in ctx.request.body.attachment) {
                         bot.telegram.sendPhoto(
                             ctx.channel,
-                            ctx.request.body.attachment.url,
+                            {url: ctx.request.body.attachment.url},
                             Object.assign({
                                 caption: `${ctx.request.body.author} says: ${ctx.request.body.msg}`
                             }, general_extra)
@@ -33,7 +32,8 @@ module.exports = ctx => {
                     else if ('attachment[content]' in ctx.request.body) {
                         bot.telegram.sendPhoto(
                             ctx.channel,
-                            fs.readFileSync(ctx.request.body['attachment[content]'].path).toString(),
+                            {source: fs.readFileSync(ctx.request.body['attachment[content]'].path)},
+                            //todo: понять почему не ставится тип multipart
                             Object.assign({
                                 caption: `${ctx.request.body.author} says: ${ctx.request.body.msg}`
                             }, general_extra)
@@ -47,5 +47,5 @@ module.exports = ctx => {
             }
             break;
     }
-    return {ok: true};
+    return ctx.ok;
 };

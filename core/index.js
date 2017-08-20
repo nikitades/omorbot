@@ -17,6 +17,16 @@ app.context.ok = {ok: true};
 app.context.fail = {ok: false};
 app.keys = config.secret;
 
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (e) {
+        console.log(e);
+        ctx.body = ctx.fail;
+        ctx.body.message = e.message;
+    }
+});
+
 router.get('*', ctx => {
     ctx.body = 'Sorry, the explicit sending is forbidden for the moment.';
 });

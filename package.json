@@ -14,11 +14,16 @@
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "busboy": "^0.2.14",
+    "handlebars": "^4.0.10",
     "koa": "^2.3.0",
     "koa-body": "^2.3.0",
     "koa-router": "^7.2.1",
     "koa-static": "^3.0.0",
-    "telegraf": "^3.8.0"
+    "request": "^2.81.0",
+    "selenium": "^2.20.0",
+    "selenium-webdriver": "^3.4.0",
+    "telegraf": "^3.8.0",
+    "underscore": "^1.8.3"
   },
   "babel": {
     "presets": [
