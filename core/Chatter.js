@@ -39,12 +39,17 @@ module.exports = class Chatter {
             const driver = new webdriver.Builder().withCapabilities(options.toCapabilities()).build();
             driver.get('file://' + this.pagePath)
                 .then(() => {
+                    return driver.manage().setTimeouts({
+                        pageLoad: 10
+                    });
+                })
+                .then(() => {
                     return driver.executeScript(() => {
                         return document.getElementsByTagName('body')[0].offsetHeight;
                     })
                 }, rej)
                 .then((height) => {
-                    return driver.manage().window().setSize(550, height);
+                    return driver.manage().window().setSize(577, height);
                 }, rej)
                 .then(() => {
                     return driver.takeScreenshot();
