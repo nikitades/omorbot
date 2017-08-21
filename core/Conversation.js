@@ -26,7 +26,6 @@ module.exports = class Conversation {
                 name: await this.getUserData(item.from_id, 'first_name'),
                 image: await this.getUserData(item.from_id, 'photo_50'),
                 items: [this.extractMessage(item)]
-                //TODO: закончил тут. ломается жсон
             });
         }
         return parsed_conv;

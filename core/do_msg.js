@@ -33,7 +33,6 @@ module.exports = ctx => {
                         bot.telegram.sendPhoto(
                             ctx.channel,
                             {source: fs.readFileSync(ctx.request.body['attachment[content]'].path)},
-                            //todo: понять почему не ставится тип multipart
                             Object.assign({
                                 caption: `${ctx.request.body.author} says: ${ctx.request.body.msg}`
                             }, general_extra)
