@@ -1,0 +1,79 @@
+.clearfix:after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+body {
+    background: #FFFFFF;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    direction: ltr;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, Open Sans, Helvetica Neue, sans-serif;
+    line-height: 1.154;
+    font-weight: 400;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+#chatter {
+    padding: 25px;
+}
+
+.messages--stack {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.messages--user-photo {
+    float: left;
+    margin-right: 8px;
+}
+
+.messages--user-photo img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    -moz-force-broken-image-icon: 0;
+    background-color: inherit;
+}
+
+.messages--message-text {
+    float: left;
+}
+
+.messages--author-name {
+    color: #42648b;
+    font-size: 12px;
+    font-weight: 700;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 1.23;
+    margin-top: 3px;
+}
+
+.messages--grouped-replies {
+    max-width: 542px;
+    box-sizing: border-box;
+    padding-right: 28px;
+    font-size: 13px;
+}
+
+.messages--grouped-replies p {
+    padding: 6px 30px 7px 0;
+    position: relative;
+    margin: 0;
+    font-weight: 400;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.messages--author-name + .messages--grouped-replies p:first-child {
+    margin-top: -4px;
+}

@@ -8,5 +8,6 @@ module.exports = {
     api_token: '111',
     http_port: 80,
     https_port: 443,
-    channel: '@bot_honeypot'
+    channel: '@bot_honeypot',
+    personality: 19814623
 };

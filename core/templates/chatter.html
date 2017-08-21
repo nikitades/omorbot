@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title of the document</title>
+    <link rel="stylesheet" href="./chatter.css">
 </head>
 <body>
 <div id="chatter">
     {{#each conversation}}
-        From: <b>{{name}}</b>
-        {{#each items}}
-        <p>{{body}}</p>
-        {{/each}}
+    <div class="messages--stack clearfix">
+        <div class="messages--user-photo">
+            <img src="{{this.image}}" alt="User photo">
+        </div>
+        <div class="messages--message-text">
+            <div class="messages--author-name">
+                {{this.name}}
+            </div>
+            <div class="messages--grouped-replies">
+                {{#each this.items}}
+                <p>{{body}}</p>
+                {{/each}}
+            </div>
+        </div>
+    </div>
     {{/each}}
 </div>
 </body>

@@ -33,14 +33,22 @@ module.exports = class Chatter {
             options.addArguments(
                 'headless',
                 'disable-gpu',
-                'load-component-extension',
-                'disable-extensions'
+                'disable-extensions',
+                'start-maximized'
             );
             const driver = new webdriver.Builder().withCapabilities(options.toCapabilities()).build();
             driver.get('file://' + this.pagePath)
                 .then(() => {
-                    return driver.takeScreenshot();
+                    return driver.executeScript(() => {
+                        return document.getElementsByTagName('body')[0].offsetHeight;
+                    })
                 }, rej)
+                .then((height) => {
+                    return driver.manage().window().setSize(550, height);
+                }, rej)
+                .then(() => {
+                    return driver.takeScreenshot();
+                })
                 .then(base64 => {
                     res(new Buffer(base64, 'base64'));
                 }, rej);

@@ -4,6 +4,7 @@ const path = require('path');
 const Markup = require('telegraf').Markup;
 const Extra = require('telegraf').Extra;
 const Conversation = require('./Conversation');
+const config = require('../config');
 
 let general_extra = Extra
     .markdown()
@@ -20,7 +21,7 @@ module.exports = async ctx => {
     });
     await chatter.ready;
     bot.telegram.sendPhoto(
-        '@supatest',
+        config.channel,
         {
             source: await chatter.make()
         },
